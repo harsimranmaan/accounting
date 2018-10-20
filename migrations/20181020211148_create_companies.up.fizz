@@ -1,5 +1,7 @@
 create_table("companies") {
 	t.Column("id", "uuid", {"primary": true})
 	t.Column("name", "string", {})
+	t.Column("domain_name", "string", {})
 	t.Column("is_active", "bool", {})
 }
+add_index("companies", "domain_name", {"unique": true})

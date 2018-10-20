@@ -1,21 +1,61 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta charset="utf-8">
-    <title>Buffalo - Accounting</title>
-    <%= stylesheetTag("application.css") %>
-    <meta name="csrf-param" content="authenticity_token" />
-    <meta name="csrf-token" content="<%= authenticity_token %>" />
-    <link rel="icon" href="<%= assetPath("images/favicon.ico") %>">
-  </head>
-  <body>
 
-    <div class="container">
-      <%= partial("flash.html") %>
-      <%= yield %>
-    </div>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="utf-8">
+  <title>Harnico - Accounting</title>
+  <%= stylesheetTag("application.css") %>
+  <meta name="csrf-param" content="authenticity_token" />
+  <meta name="csrf-token" content="<%= authenticity_token %>" />
+  <link rel="icon" href="<%= assetPath(" images/favicon.ico") %>">
+</head>
 
-    <%= javascriptTag("application.js") %>
-  </body>
+<body>
+
+  <div class="container-fluid">
+    <header>
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="<%= rootPath() %>">
+          <img src="<%= rootPath() %>assets/images/harnico.png" width="30" height="30" alt="">
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="<%= companiesPath() %>">Companies</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="<%= usersPath() %>">Users</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="<%= projectsPath() %>">Projects</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-1 col-sm-2 col-xs-2 logo">
+            <a href="<%= rootPath() %>"><img src="<%= rootPath() %>assets/images/harnico.png" alt=""></a>
+          </div>
+          <div class="col-md-9 col-sm-9 col-xs-10 titles">
+            <h1>
+              <%= t("welcome_greeting") %>
+            </h1>
+          </div>
+        </div>
+      </div>
+
+    </header>
+    <%= partial("flash.html") %>
+    <%= yield %>
+  </div>
+
+  <%= javascriptTag("application.js") %>
+</body>
+
 </html>

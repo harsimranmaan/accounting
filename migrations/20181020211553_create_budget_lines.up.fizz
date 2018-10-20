@@ -1,0 +1,7 @@
+create_table("budget_lines") {
+	t.Column("id", "uuid", {"primary": true})
+	t.Column("name", "string", {})
+	t.Column("amount", "decimal(12,2)", {})
+	t.Column("project_id", "uuid", {})
+	t.ForeignKey("project_id", {"projects": ["id"]}, {"on_delete": "cascade"})
+}

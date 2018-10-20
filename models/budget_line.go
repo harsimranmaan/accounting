@@ -10,53 +10,47 @@ import (
 	"github.com/gobuffalo/validate/validators"
 )
 
-type Company struct {
+type BudgetLine struct {
 	ID        uuid.UUID `json:"id" db:"id"`
 	CreatedAt time.Time `json:"created_at" db:"created_at"`
 	UpdatedAt time.Time `json:"updated_at" db:"updated_at"`
 	Name      string    `json:"name" db:"name"`
-	IsActive  bool      `json:"is_active" db:"is_active"`
-	Projects  Projects  `has_many:"projects"`
-	Users     Users     `has_many:"users"`
+	Amount    float64   `json:"amount" db:"amount"`
+	ProjectID uuid.UUID `json:"project_id" db:"project_id"`
+	Project   Project   `belongs_to:"project"`
 }
 
 // String is not required by pop and may be deleted
-func (c Company) String() string {
-	jc, _ := json.Marshal(c)
-	return string(jc)
-}
-func (c Company) SelectValue() interface{} {
-	return c.ID
-}
-func (c Company) SelectLabel() string {
-	return c.Name
+func (b BudgetLine) String() string {
+	jb, _ := json.Marshal(b)
+	return string(jb)
 }
 
-// Companies is not required by pop and may be deleted
-type Companies []Company
+// BudgetLines is not required by pop and may be deleted
+type BudgetLines []BudgetLine
 
 // String is not required by pop and may be deleted
-func (c Companies) String() string {
-	jc, _ := json.Marshal(c)
-	return string(jc)
+func (b BudgetLines) String() string {
+	jb, _ := json.Marshal(b)
+	return string(jb)
 }
 
 // Validate gets run every time you call a "pop.Validate*" (pop.ValidateAndSave, pop.ValidateAndCreate, pop.ValidateAndUpdate) method.
 // This method is not required and may be deleted.
-func (c *Company) Validate(tx *pop.Connection) (*validate.Errors, error) {
+func (b *BudgetLine) Validate(tx *pop.Connection) (*validate.Errors, error) {
 	return validate.Validate(
-		&validators.StringIsPresent{Field: c.Name, Name: "Name"},
+		&validators.StringIsPresent{Field: b.Name, Name: "Name"},
 	), nil
 }
 
 // ValidateCreate gets run every time you call "pop.ValidateAndCreate" method.
 // This method is not required and may be deleted.
-func (c *Company) ValidateCreate(tx *pop.Connection) (*validate.Errors, error) {
+func (b *BudgetLine) ValidateCreate(tx *pop.Connection) (*validate.Errors, error) {
 	return validate.NewErrors(), nil
 }
 
 // ValidateUpdate gets run every time you call "pop.ValidateAndUpdate" method.
 // This method is not required and may be deleted.
-func (c *Company) ValidateUpdate(tx *pop.Connection) (*validate.Errors, error) {
+func (b *BudgetLine) ValidateUpdate(tx *pop.Connection) (*validate.Errors, error) {
 	return validate.NewErrors(), nil
 }

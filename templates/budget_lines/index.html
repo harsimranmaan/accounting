@@ -1,0 +1,33 @@
+<div class="page-header">
+  <h1>BudgetLines</h1>
+</div>
+<ul class="list-unstyled list-inline">
+  <li><a href="<%= newBudgetLinesPath() %>" class="btn btn-primary">Create New BudgetLine</a></li>
+</ul>
+
+<table class="table table-striped">
+  <thead>
+  <th>Name</th>
+    <th>Amount</th>
+    <th>&nbsp;</th>
+  </thead>
+  <tbody>
+    <%= for (budgetLine) in budgetLines { %>
+      <tr>
+      <td><%= budgetLine.Name %></td>
+        <td><%= budgetLine.Amount %></td>
+        <td>
+          <div class="pull-right">
+            <a href="<%= budgetLinePath({ budget_line_id: budgetLine.ID }) %>" class="btn btn-info">View</a>
+            <a href="<%= editBudgetLinePath({ budget_line_id: budgetLine.ID }) %>" class="btn btn-warning">Edit</a>
+            <a href="<%= budgetLinePath({ budget_line_id: budgetLine.ID }) %>" data-method="DELETE" data-confirm="Are you sure?" class="btn btn-danger">Destroy</a>
+          </div>
+        </td>
+      </tr>
+    <% } %>
+  </tbody>
+</table>
+
+<div class="text-center">
+  <%= paginator(pagination) %>
+</div>

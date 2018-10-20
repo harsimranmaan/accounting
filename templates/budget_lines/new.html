@@ -1,0 +1,8 @@
+<div class="page-header">
+  <h1>New BudgetLine</h1>
+</div>
+
+<%= form_for(budgetLine, {action: budgetLinesPath(), method: "POST"}) { %>
+  <%= partial("budget_lines/form.html") %>
+  <a href="<%= budgetLinesPath() %>" class="btn btn-warning" data-confirm="Are you sure?">Cancel</a>
+<% } %>

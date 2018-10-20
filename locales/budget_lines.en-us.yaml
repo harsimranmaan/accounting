@@ -1,0 +1,6 @@
+- id: "budget_line.created.success"
+  translation: "BudgetLine was successfully created."
+- id: "budget_line.updated.success"
+  translation: "BudgetLine was successfully updated."
+- id: "budget_line.destroyed.success"
+  translation: "BudgetLine was successfully destroyed."

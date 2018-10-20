@@ -12,10 +12,12 @@ require (
 	github.com/gobuffalo/plush v3.7.21+incompatible // indirect
 	github.com/gobuffalo/pop v4.8.4+incompatible
 	github.com/gobuffalo/suite v2.1.6+incompatible
-	github.com/gobuffalo/uuid v2.0.5+incompatible // indirect
+	github.com/gobuffalo/uuid v2.0.5+incompatible
+	github.com/gobuffalo/validate v2.0.3+incompatible
 	github.com/kr/pty v1.1.3 // indirect
 	github.com/markbates/grift v1.0.4
 	github.com/markbates/inflect v1.0.3 // indirect
+	github.com/pkg/errors v0.8.0
 	github.com/unrolled/secure v0.0.0-20181005190816-ff9db2ff917f
 	golang.org/x/sys v0.0.0-20181019160139-8e24a49d80f8 // indirect
 )

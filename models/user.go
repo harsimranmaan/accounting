@@ -11,13 +11,15 @@ import (
 )
 
 type User struct {
-	ID        uuid.UUID `json:"id" db:"id"`
-	CreatedAt time.Time `json:"created_at" db:"created_at"`
-	UpdatedAt time.Time `json:"updated_at" db:"updated_at"`
-	Name      string    `json:"name" db:"name"`
-	IsActive  bool      `json:"is_active" db:"is_active"`
-	CompanyID uuid.UUID `json:"company_id" db:"company_id"`
-	Company   Company   `belongs_to:"company"`
+	ID                 uuid.UUID          `json:"id" db:"id"`
+	CreatedAt          time.Time          `json:"created_at" db:"created_at"`
+	UpdatedAt          time.Time          `json:"updated_at" db:"updated_at"`
+	Name               string             `json:"name" db:"name"`
+	Email              string             `json:"email" db:"email"`
+	IsActive           bool               `json:"is_active" db:"is_active"`
+	CompanyID          uuid.UUID          `json:"company_id" db:"company_id"`
+	Company            Company            `belongs_to:"company"`
+	UsersAuthProviders UsersAuthProviders `has_many:"users_auth_providers"`
 }
 
 // String is not required by pop and may be deleted

@@ -11,14 +11,14 @@ import (
 )
 
 type Company struct {
-	ID         uuid.UUID `json:"id" db:"id"`
-	CreatedAt  time.Time `json:"created_at" db:"created_at"`
-	UpdatedAt  time.Time `json:"updated_at" db:"updated_at"`
-	Name       string    `json:"name" db:"name"`
-	DomainName string    `json:"domain_name" db:"domain_name"`
-	IsActive   bool      `json:"is_active" db:"is_active"`
-	Projects   Projects  `has_many:"projects"`
-	Users      Users     `has_many:"users"`
+	ID            uuid.UUID     `json:"id" db:"id"`
+	CreatedAt     time.Time     `json:"created_at" db:"created_at"`
+	UpdatedAt     time.Time     `json:"updated_at" db:"updated_at"`
+	Name          string        `json:"name" db:"name"`
+	DomainName    string        `json:"domain_name" db:"domain_name"`
+	IsActive      bool          `json:"is_active" db:"is_active"`
+	Projects      Projects      `has_many:"projects"`
+	Users         Users         `has_many:"users"`
 }
 
 // String is not required by pop and may be deleted

@@ -99,6 +99,7 @@ ALTER TABLE public.schema_migration OWNER TO postgres;
 CREATE TABLE public.users (
     id uuid NOT NULL,
     name character varying(255) NOT NULL,
+    email character varying(255) NOT NULL,
     is_active boolean NOT NULL,
     company_id uuid NOT NULL,
     created_at timestamp without time zone NOT NULL,
@@ -107,6 +108,22 @@ CREATE TABLE public.users (
 
 
 ALTER TABLE public.users OWNER TO postgres;
+
+--
+-- Name: users_auth_providers; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.users_auth_providers (
+    id uuid NOT NULL,
+    auth_provider character varying(255) NOT NULL,
+    ext_id character varying(255) NOT NULL,
+    user_id uuid NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.users_auth_providers OWNER TO postgres;
 
 --
 -- Name: budget_lines budget_lines_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
@@ -133,6 +150,14 @@ ALTER TABLE ONLY public.projects
 
 
 --
+-- Name: users_auth_providers users_auth_providers_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.users_auth_providers
+    ADD CONSTRAINT users_auth_providers_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -155,6 +180,20 @@ CREATE UNIQUE INDEX schema_migration_version_idx ON public.schema_migration USIN
 
 
 --
+-- Name: users_auth_providers_auth_provider,ext_id_idx; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE UNIQUE INDEX "users_auth_providers_auth_provider,ext_id_idx" ON public.users_auth_providers USING btree (auth_provider, ext_id);
+
+
+--
+-- Name: users_email,company_id_idx; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE UNIQUE INDEX "users_email,company_id_idx" ON public.users USING btree (email, company_id);
+
+
+--
 -- Name: budget_lines budget_lines_project_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -168,6 +207,14 @@ ALTER TABLE ONLY public.budget_lines
 
 ALTER TABLE ONLY public.projects
     ADD CONSTRAINT projects_company_id_fkey FOREIGN KEY (company_id) REFERENCES public.companies(id) ON DELETE CASCADE;
+
+
+--
+-- Name: users_auth_providers users_auth_providers_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.users_auth_providers
+    ADD CONSTRAINT users_auth_providers_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id) ON DELETE CASCADE;
 
 
 --

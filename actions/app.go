@@ -1,18 +1,18 @@
 package actions
 
 import (
-	"github.com/gobuffalo/buffalo"
-	"github.com/gobuffalo/envy"
-	forcessl "github.com/gobuffalo/mw-forcessl"
-	paramlogger "github.com/gobuffalo/mw-paramlogger"
-	"github.com/unrolled/secure"
-
 	"accounting/models"
 
+	"github.com/gobuffalo/buffalo"
 	"github.com/gobuffalo/buffalo-pop/pop/popmw"
+	"github.com/gobuffalo/envy"
 	csrf "github.com/gobuffalo/mw-csrf"
+	forcessl "github.com/gobuffalo/mw-forcessl"
 	i18n "github.com/gobuffalo/mw-i18n"
+	paramlogger "github.com/gobuffalo/mw-paramlogger"
 	"github.com/gobuffalo/packr"
+	"github.com/markbates/goth/gothic"
+	"github.com/unrolled/secure"
 )
 
 // ENV is used to help switch settings based on where the
@@ -64,6 +64,12 @@ func App() *buffalo.App {
 		app.Resource("/users", UsersResource{})
 		p := app.Resource("/projects", ProjectsResource{})
 		p.Resource("/budget_lines", BudgetLinesResource{})
+		auth := app.Group("/auth")
+		auth.GET("/{provider}", buffalo.WrapHandlerFunc(gothic.BeginAuthHandler))
+		auth.GET("/{provider}/callback", AuthCallback)
+		auth.DELETE("", logout)
+
+		
 		app.ServeFiles("/", assetsBox) // serve files from the public directory
 	}
 

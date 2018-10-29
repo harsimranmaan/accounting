@@ -66,6 +66,55 @@ CREATE TABLE public.companies (
 ALTER TABLE public.companies OWNER TO postgres;
 
 --
+-- Name: group_members; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.group_members (
+    id uuid NOT NULL,
+    user_id uuid NOT NULL,
+    group_id uuid NOT NULL,
+    company_id uuid NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.group_members OWNER TO postgres;
+
+--
+-- Name: groups; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.groups (
+    id uuid NOT NULL,
+    name character varying(255) NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.groups OWNER TO postgres;
+
+--
+-- Name: permissions; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.permissions (
+    id uuid NOT NULL,
+    object_type integer NOT NULL,
+    object_id uuid,
+    user_id uuid,
+    group_id uuid,
+    company_id uuid,
+    permitted boolean NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.permissions OWNER TO postgres;
+
+--
 -- Name: projects; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -142,6 +191,30 @@ ALTER TABLE ONLY public.companies
 
 
 --
+-- Name: group_members group_members_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.group_members
+    ADD CONSTRAINT group_members_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: groups groups_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.groups
+    ADD CONSTRAINT groups_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: permissions permissions_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.permissions
+    ADD CONSTRAINT permissions_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: projects projects_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -173,6 +246,34 @@ CREATE UNIQUE INDEX companies_domain_name_idx ON public.companies USING btree (d
 
 
 --
+-- Name: group_members_company_id,group_id,user_id_idx; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE UNIQUE INDEX "group_members_company_id,group_id,user_id_idx" ON public.group_members USING btree (company_id, group_id, user_id);
+
+
+--
+-- Name: permissions_company_id_idx; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX permissions_company_id_idx ON public.permissions USING btree (company_id);
+
+
+--
+-- Name: permissions_group_id_idx; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX permissions_group_id_idx ON public.permissions USING btree (group_id);
+
+
+--
+-- Name: permissions_user_id_idx; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX permissions_user_id_idx ON public.permissions USING btree (user_id);
+
+
+--
 -- Name: schema_migration_version_idx; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -199,6 +300,54 @@ CREATE UNIQUE INDEX "users_email,company_id_idx" ON public.users USING btree (em
 
 ALTER TABLE ONLY public.budget_lines
     ADD CONSTRAINT budget_lines_project_id_fkey FOREIGN KEY (project_id) REFERENCES public.projects(id) ON DELETE CASCADE;
+
+
+--
+-- Name: group_members group_members_company_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.group_members
+    ADD CONSTRAINT group_members_company_id_fkey FOREIGN KEY (company_id) REFERENCES public.companies(id) ON DELETE CASCADE;
+
+
+--
+-- Name: group_members group_members_group_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.group_members
+    ADD CONSTRAINT group_members_group_id_fkey FOREIGN KEY (group_id) REFERENCES public.groups(id) ON DELETE CASCADE;
+
+
+--
+-- Name: group_members group_members_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.group_members
+    ADD CONSTRAINT group_members_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id) ON DELETE CASCADE;
+
+
+--
+-- Name: permissions permissions_company_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.permissions
+    ADD CONSTRAINT permissions_company_id_fkey FOREIGN KEY (company_id) REFERENCES public.users(id) ON DELETE CASCADE;
+
+
+--
+-- Name: permissions permissions_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.permissions
+    ADD CONSTRAINT permissions_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id) ON DELETE CASCADE;
+
+
+--
+-- Name: permissions permissions_user_id_fkey1; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.permissions
+    ADD CONSTRAINT permissions_user_id_fkey1 FOREIGN KEY (user_id) REFERENCES public.users(id) ON DELETE CASCADE;
 
 
 --

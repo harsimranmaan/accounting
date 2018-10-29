@@ -1,0 +1,8 @@
+<div class="page-header">
+  <h1>Edit Permission</h1>
+</div>
+
+<%= form_for(permission, {action: permissionPath({ permission_id: permission.ID }), method: "PUT"}) { %>
+  <%= partial("permissions/form.html") %>
+  <a href="<%= permissionPath({ permission_id: permission.ID }) %>" class="btn btn-warning" data-confirm="Are you sure?">Cancel</a>
+<% } %>

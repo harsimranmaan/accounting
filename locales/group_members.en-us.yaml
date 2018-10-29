@@ -1,0 +1,6 @@
+- id: "group_member.created.success"
+  translation: "GroupMember was successfully created."
+- id: "group_member.updated.success"
+  translation: "GroupMember was successfully updated."
+- id: "group_member.destroyed.success"
+  translation: "GroupMember was successfully destroyed."

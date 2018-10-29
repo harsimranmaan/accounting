@@ -1,0 +1,8 @@
+<div class="page-header">
+  <h1>Edit Group</h1>
+</div>
+
+<%= form_for(group, {action: groupPath({ group_id: group.ID }), method: "PUT"}) { %>
+  <%= partial("groups/form.html") %>
+  <a href="<%= groupPath({ group_id: group.ID }) %>" class="btn btn-warning" data-confirm="Are you sure?">Cancel</a>
+<% } %>

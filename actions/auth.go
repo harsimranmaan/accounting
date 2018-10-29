@@ -22,6 +22,7 @@ func init() {
 	)
 }
 
+// AuthCallback handles redirects from the third-party auth
 func AuthCallback(c buffalo.Context) error {
 	gu, err := gothic.CompleteUserAuth(c.Response(), c.Request())
 	if err != nil {
@@ -73,8 +74,40 @@ func AuthCallback(c buffalo.Context) error {
 	if err := c.Session().Save(); err != nil {
 		return err
 	}
-	c.Flash().Add("success", u.Name)
+	c.Flash().Add("success", "You are successfully logged in")
 	return c.Redirect(302, "/")
+}
+
+func setUser(next buffalo.Handler) buffalo.Handler {
+	return func(c buffalo.Context) error {
+		if uid := c.Session().Get("current_user_id"); uid != nil {
+			u := &models.User{}
+			tx, ok := c.Value("tx").(*pop.Connection)
+			if !ok {
+				return missingTransaction
+			}
+			if err := tx.Eager("Company").Find(u, uid); err != nil {
+				return err
+			}
+			c.Set("current_user", u)
+			// tx = tx.Where("company_id = ?", u.CompanyID)
+			// c.Set("tx", tx)
+		}
+		return next(c)
+	}
+}
+
+func authorize(next buffalo.Handler) buffalo.Handler {
+	return func(c buffalo.Context) error {
+		if u := c.Value("current_user"); u == nil {
+			c.Flash().Add("danger", "You are not authorized to perform this action. Ask you admin for permission")
+			return c.Redirect(302,"/")
+		}
+		//req:= c.Request()
+		// user:= c.Value("current_user").(*models.User)
+		// roleCheck:= fmt.Sprintf("%s_%s",req.URL.Path, req.Method)
+		return next(c)
+	}
 }
 
 func logout(c buffalo.Context) error {
@@ -82,5 +115,6 @@ func logout(c buffalo.Context) error {
 	if err := c.Session().Save(); err != nil {
 		return err
 	}
+	c.Flash().Add("success", "You have been logged out")
 	return c.Redirect(302, "/")
 }

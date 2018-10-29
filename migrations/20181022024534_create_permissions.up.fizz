@@ -1,0 +1,16 @@
+create_table("permissions") {
+	t.Column("id", "uuid", {"primary": true})
+	t.Column("object_type", "integer", {})
+	t.Column("object_id", "uuid", {"null": true})
+	t.Column("user_id", "uuid", {"null": true})
+	t.Column("group_id", "uuid", {"null": true})
+	t.Column("company_id", "uuid", {"null": true})
+	t.Column("permitted", "bool", {})
+	t.ForeignKey("user_id", {"users": ["id"]}, {"on_delete": "cascade"})
+	t.ForeignKey("company_id", {"users": ["id"]}, {"on_delete": "cascade"})
+	t.ForeignKey("user_id", {"users": ["id"]}, {"on_delete": "cascade"})
+}
+
+add_index("permissions", "company_id", {})
+add_index("permissions", "group_id", {})
+add_index("permissions", "user_id", {})

@@ -35,13 +35,13 @@ func (v BudgetLinesResource) List(c buffalo.Context) error {
 	}
 
 	budgetLines := &models.BudgetLines{}
-
+	pid := (c.Value("current_project").(*models.Project)).ID
 	// Paginate results. Params "page" and "per_page" control pagination.
 	// Default values are "page=1" and "per_page=20".
 	q := tx.PaginateFromParams(c.Params())
 
 	// Retrieve all BudgetLines from the DB
-	if err := q.All(budgetLines); err != nil {
+	if err := q.Where("project_id = ?", pid).All(budgetLines); err != nil {
 		return errors.WithStack(err)
 	}
 
@@ -87,13 +87,13 @@ func (v BudgetLinesResource) Create(c buffalo.Context) error {
 	if err := c.Bind(budgetLine); err != nil {
 		return errors.WithStack(err)
 	}
-
 	// Get the DB connection from the context
 	tx, ok := c.Value("tx").(*pop.Connection)
 	if !ok {
 		return errors.WithStack(errors.New("no transaction found"))
 	}
-
+	pid := (c.Value("current_project").(*models.Project)).ID
+	budgetLine.ProjectID = pid
 	// Validate the data from the html form
 	verrs, err := tx.ValidateAndCreate(budgetLine)
 	if err != nil {
@@ -150,12 +150,13 @@ func (v BudgetLinesResource) Update(c buffalo.Context) error {
 	if err := tx.Find(budgetLine, c.Param("budget_line_id")); err != nil {
 		return c.Error(404, err)
 	}
+	pid := budgetLine.ProjectID
 
 	// Bind BudgetLine to the html form elements
 	if err := c.Bind(budgetLine); err != nil {
 		return errors.WithStack(err)
 	}
-
+	budgetLine.ProjectID = pid
 	verrs, err := tx.ValidateAndUpdate(budgetLine)
 	if err != nil {
 		return errors.WithStack(err)

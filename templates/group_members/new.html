@@ -1,0 +1,8 @@
+<div class="page-header">
+  <h1>New GroupMember</h1>
+</div>
+
+<%= form_for(groupMember, {action: groupMembersPath(), method: "POST"}) { %>
+  <%= partial("group_members/form.html") %>
+  <a href="<%= groupMembersPath() %>" class="btn btn-warning" data-confirm="Are you sure?">Cancel</a>
+<% } %>

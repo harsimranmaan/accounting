@@ -54,22 +54,29 @@ func App() *buffalo.App {
 		//  c.Value("tx").(*pop.Connection)
 		// Remove to disable this.
 		app.Use(popmw.Transaction(models.DB))
-
+		app.Use(setUser)
+		app.Use(authorize)
 		// Setup and use translations:
 		app.Use(translations())
 
 		app.GET("/", HomeHandler)
-
+		app.Middleware.Skip(authorize,HomeHandler)
 		app.Resource("/companies", CompaniesResource{})
 		app.Resource("/users", UsersResource{})
 		p := app.Resource("/projects", ProjectsResource{})
-		p.Resource("/budget_lines", BudgetLinesResource{})
+		b:=p.Resource("/budget_lines", BudgetLinesResource{})
+		b.Use(setProject)
 		auth := app.Group("/auth")
-		auth.GET("/{provider}", buffalo.WrapHandlerFunc(gothic.BeginAuthHandler))
+		bah := buffalo.WrapHandlerFunc(gothic.BeginAuthHandler)
+		auth.GET("/{provider}", bah)
 		auth.GET("/{provider}/callback", AuthCallback)
-		auth.DELETE("", logout)
+		auth.DELETE("/logout", logout)
+		auth.Middleware.Skip(authorize, AuthCallback, bah)
 
-		
+		app.Resource("/permissions", PermissionsResource{})
+		app.Resource("/group_members", GroupMembersResource{})
+
+		app.Resource("/groups", GroupsResource{})
 		app.ServeFiles("/", assetsBox) // serve files from the public directory
 	}
 

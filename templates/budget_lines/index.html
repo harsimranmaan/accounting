@@ -2,7 +2,7 @@
   <h1>BudgetLines</h1>
 </div>
 <ul class="list-unstyled list-inline">
-  <li><a href="<%= newBudgetLinesPath() %>" class="btn btn-primary">Create New BudgetLine</a></li>
+  <li><a href="<%= newProjectBudgetLinesPath({ project_id: current_project.ID }) %>" class="btn btn-primary">Create New BudgetLine</a> <a href="<%= projectPath({ project_id: current_project.ID }) %>" class="btn btn-light">Back to Project <%= current_project.Name %></a></li>
 </ul>
 
 <table class="table table-striped">
@@ -18,9 +18,9 @@
         <td><%= budgetLine.Amount %></td>
         <td>
           <div class="pull-right">
-            <a href="<%= budgetLinePath({ budget_line_id: budgetLine.ID }) %>" class="btn btn-info">View</a>
-            <a href="<%= editBudgetLinePath({ budget_line_id: budgetLine.ID }) %>" class="btn btn-warning">Edit</a>
-            <a href="<%= budgetLinePath({ budget_line_id: budgetLine.ID }) %>" data-method="DELETE" data-confirm="Are you sure?" class="btn btn-danger">Destroy</a>
+            <a href="<%= projectBudgetLinePath({ project_id: current_project.ID, budget_line_id: budgetLine.ID }) %>" class="btn btn-info">View</a>
+            <a href="<%= editProjectBudgetLinePath({ project_id: current_project.ID, budget_line_id: budgetLine.ID }) %>" class="btn btn-warning">Edit</a>
+            <a href="<%= projectBudgetLinePath({ project_id: current_project.ID, budget_line_id: budgetLine.ID }) %>" data-method="DELETE" data-confirm="Are you sure?" class="btn btn-danger">Destroy</a>
           </div>
         </td>
       </tr>

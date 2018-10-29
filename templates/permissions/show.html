@@ -1,0 +1,28 @@
+<div class="page-header">
+  <h1>Permission#Show</h1>
+</div>
+
+<ul class="list-unstyled list-inline">
+  <li class="list-inline-item"><a href="<%= permissionsPath() %>" class="btn btn-info">Back to all Permissions</a></li>
+  <li class="list-inline-item"><a href="<%= editPermissionPath({ permission_id: permission.ID })%>" class="btn btn-warning">Edit</a></li>
+  <li class="list-inline-item"><a href="<%= permissionPath({ permission_id: permission.ID })%>" data-method="DELETE" data-confirm="Are you sure?" class="btn btn-danger">Destroy</a>
+</ul>
+
+<p>
+  <strong>ObjectType</strong>: <%= permission.ObjectType %>
+</p>
+<p>
+  <strong>ObjectID</strong>: <%= permission.ObjectID %>
+</p>
+<p>
+  <strong>UserID</strong>: <%= permission.UserID %>
+</p>
+<p>
+  <strong>GroupID</strong>: <%= permission.GroupID %>
+</p>
+<p>
+  <strong>CompanyID</strong>: <%= permission.CompanyID %>
+</p>
+<p>
+  <strong>Permitted</strong>: <%= permission.Permitted %>
+</p>

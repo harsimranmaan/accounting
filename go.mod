@@ -20,5 +20,6 @@ require (
 	github.com/markbates/inflect v1.0.3 // indirect
 	github.com/pkg/errors v0.8.0
 	github.com/unrolled/secure v0.0.0-20181005190816-ff9db2ff917f
+	golang.org/x/crypto v0.0.0-20181015023909-0c41d7ab0a0e
 	golang.org/x/sys v0.0.0-20181019160139-8e24a49d80f8 // indirect
 )

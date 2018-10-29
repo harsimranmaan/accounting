@@ -1,0 +1,41 @@
+<div class="page-header">
+  <h1>Permissions</h1>
+</div>
+<ul class="list-unstyled list-inline">
+  <li><a href="<%= newPermissionsPath() %>" class="btn btn-primary">Create New Permission</a></li>
+</ul>
+
+<table class="table table-striped">
+  <thead>
+  <th>ObjectType</th>
+    <th>ObjectID</th>
+    <th>UserID</th>
+    <th>GroupID</th>
+    <th>CompanyID</th>
+    <th>Permitted</th>
+    <th>&nbsp;</th>
+  </thead>
+  <tbody>
+    <%= for (permission) in permissions { %>
+      <tr>
+      <td><%= permission.ObjectType %></td>
+        <td><%= permission.ObjectID %></td>
+        <td><%= permission.UserID %></td>
+        <td><%= permission.GroupID %></td>
+        <td><%= permission.CompanyID %></td>
+        <td><%= permission.Permitted %></td>
+        <td>
+          <div class="pull-right">
+            <a href="<%= permissionPath({ permission_id: permission.ID }) %>" class="btn btn-info">View</a>
+            <a href="<%= editPermissionPath({ permission_id: permission.ID }) %>" class="btn btn-warning">Edit</a>
+            <a href="<%= permissionPath({ permission_id: permission.ID }) %>" data-method="DELETE" data-confirm="Are you sure?" class="btn btn-danger">Destroy</a>
+          </div>
+        </td>
+      </tr>
+    <% } %>
+  </tbody>
+</table>
+
+<div class="text-center">
+  <%= paginator(pagination) %>
+</div>

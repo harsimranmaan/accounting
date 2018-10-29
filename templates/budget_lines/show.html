@@ -3,9 +3,9 @@
 </div>
 
 <ul class="list-unstyled list-inline">
-  <li class="list-inline-item"><a href="<%= budgetLinesPath() %>" class="btn btn-info">Back to all BudgetLines</a></li>
-  <li class="list-inline-item"><a href="<%= editBudgetLinePath({ budget_line_id: budgetLine.ID })%>" class="btn btn-warning">Edit</a></li>
-  <li class="list-inline-item"><a href="<%= budgetLinePath({ budget_line_id: budgetLine.ID })%>" data-method="DELETE" data-confirm="Are you sure?" class="btn btn-danger">Destroy</a>
+  <li class="list-inline-item"><a href="<%= projectBudgetLinesPath({project_id: current_project.ID}) %>" class="btn btn-info">Back to all BudgetLines</a></li>
+  <li class="list-inline-item"><a href="<%= editProjectBudgetLinePath({ project_id: current_project.ID, budget_line_id: budgetLine.ID }) %>" class="btn btn-warning">Edit</a></li>
+  <li class="list-inline-item"><a href="<%= projectBudgetLinePath({ project_id: current_project.ID, budget_line_id: budgetLine.ID }) %>" data-method="DELETE" data-confirm="Are you sure?" class="btn btn-danger">Destroy</a>
 </ul>
 
 <p>

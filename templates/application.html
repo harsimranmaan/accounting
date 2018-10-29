@@ -36,32 +36,16 @@
             </li>
           </ul>
           <span class="navbar-text">
-              <% let provider = "" %>
               <%=  if (current_user) { %>
-              Hello <%= current_user.Name %>
-              <form class="form-inline my-2 my-lg-0" action="<%= authPath({provider: provider}) %>" method="DELETE">
-                  <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Logout</button>
-              </form>
+              <%= current_user.Name %>
+              <a href="<%= authLogoutPath() %>" method="delete" data-method="DELETE">Logout</a>
               <% } else { %>
-              <% provider = "google" %>
-              <a class="nav-link" href="<%= authPath({provider: provider}) %>">Login</a>
+              <% let authProvider = "google" %>
+              <a class="nav-link" href="<%= authPath({provider: authProvider}) %>">Login</a>
               <% } %>
             </span>
         </div>
       </nav>
-      <div class="container-fluid">
-        <div class="row">
-          <div class="col-md-1 col-sm-2 col-xs-2 logo">
-            <a href="<%= rootPath() %>"><img src="<%= rootPath() %>assets/images/harnico.png" alt=""></a>
-          </div>
-          <div class="col-md-9 col-sm-9 col-xs-10 titles">
-            <h1>
-              <%= t("welcome_greeting") %>
-            </h1>
-          </div>
-        </div>
-      </div>
-
     </header>
     <%= partial("flash.html") %>
     <%= yield %>

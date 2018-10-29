@@ -1,0 +1,6 @@
+- id: "permission.created.success"
+  translation: "Permission was successfully created."
+- id: "permission.updated.success"
+  translation: "Permission was successfully updated."
+- id: "permission.destroyed.success"
+  translation: "Permission was successfully destroyed."

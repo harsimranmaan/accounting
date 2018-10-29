@@ -39,9 +39,9 @@ func (v ProjectsResource) List(c buffalo.Context) error {
 	// Paginate results. Params "page" and "per_page" control pagination.
 	// Default values are "page=1" and "per_page=20".
 	q := tx.PaginateFromParams(c.Params())
-
+	cid := (c.Value("current_user").(*models.User)).CompanyID
 	// Retrieve all Projects from the DB
-	if err := q.All(projects); err != nil {
+	if err := q.Where("company_id = ?", cid).All(projects); err != nil {
 		return errors.WithStack(err)
 	}
 
@@ -64,7 +64,7 @@ func (v ProjectsResource) Show(c buffalo.Context) error {
 	project := &models.Project{}
 
 	// To find the Project the parameter project_id is used.
-	if err := tx.Find(project, c.Param("project_id")); err != nil {
+	if err := tx.Eager("BudgetLines").Find(project, c.Param("project_id")); err != nil {
 		return c.Error(404, err)
 	}
 
@@ -87,7 +87,7 @@ func (v ProjectsResource) Create(c buffalo.Context) error {
 	if err := c.Bind(project); err != nil {
 		return errors.WithStack(err)
 	}
-
+	project.CompanyID = (c.Value("current_user").(*models.User)).CompanyID
 	// Get the DB connection from the context
 	tx, ok := c.Value("tx").(*pop.Connection)
 	if !ok {
@@ -150,12 +150,13 @@ func (v ProjectsResource) Update(c buffalo.Context) error {
 	if err := tx.Find(project, c.Param("project_id")); err != nil {
 		return c.Error(404, err)
 	}
+	cid := project.CompanyID
 
 	// Bind Project to the html form elements
 	if err := c.Bind(project); err != nil {
 		return errors.WithStack(err)
 	}
-
+	project.CompanyID = cid
 	verrs, err := tx.ValidateAndUpdate(project)
 	if err != nil {
 		return errors.WithStack(err)

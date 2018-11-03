@@ -15,7 +15,7 @@ buffalo db migrate
 buffalo dev
 ```
 
-Set GOOGLE_KEY and GOOGLE_SECRET from your google api account for auth.
+Set GOOGLE_KEY and GOOGLE_SECRET from your google api account for auth. Use the .env file for development.
 
 Go to [http://localhost:3000](http://localhost:3000)
 

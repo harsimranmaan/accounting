@@ -159,8 +159,6 @@ CREATE TABLE public.receipts (
     receipt_type character varying(255) NOT NULL,
     receipt_date timestamp without time zone NOT NULL,
     budget_line_id uuid NOT NULL,
-    payment_note character varying(255),
-    payment_date timestamp without time zone,
     amount numeric(12,2) NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
@@ -222,7 +220,8 @@ CREATE TABLE public.wallet_entries (
     company_id uuid NOT NULL,
     receipt_id uuid,
     notes character varying(255),
-    amount numeric,
+    amount numeric NOT NULL,
+    payment_date timestamp without time zone NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );

@@ -3,7 +3,8 @@ create_table("wallet_entries") {
 	t.Column("company_id", "uuid", {})
 	t.Column("receipt_id", "uuid", {"null": true})
 	t.Column("notes", "string", {"null": true})
-	t.Column("amount", "decimal", {"null": true})
+	t.Column("amount", "decimal", {})
+	t.Column("payment_date", "timestamp", {})
 	t.ForeignKey("receipt_id", {"receipts": ["id"]}, {"on_delete": "restrict"})
 	t.ForeignKey("company_id", {"companies": ["id"]}, {"on_delete": "cascade"})
 }

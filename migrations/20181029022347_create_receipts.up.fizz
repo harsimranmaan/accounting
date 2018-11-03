@@ -6,8 +6,6 @@ create_table("receipts") {
 	t.Column("receipt_type", "string", {})
 	t.Column("receipt_date", "timestamp", {})
 	t.Column("budget_line_id", "uuid", {})
-	t.Column("payment_note", "string", {"null": true})
-	t.Column("payment_date", "timestamp", {"null": true})
 	t.Column("amount", "decimal(12,2)", {})
 	t.ForeignKey("company_id", {"companies": ["id"]}, {"on_delete": "cascade"})
 	t.ForeignKey("budget_line_id", {"budget_lines": ["id"]}, {"on_delete": "restrict"})

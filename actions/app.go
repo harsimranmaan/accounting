@@ -62,7 +62,7 @@ func App() *buffalo.App {
 		app.GET("/", HomeHandler)
 		app.GET("/routes", RoutesHandler)
 		app.Middleware.Skip(authorize, HomeHandler)
-		app.Middleware.Skip(authorize, RoutesHandler)
+
 		app.Resource("/companies", CompaniesResource{})
 		app.Resource("/users", UsersResource{})
 		p := app.Resource("/projects", ProjectsResource{})

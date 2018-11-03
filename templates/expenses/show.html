@@ -1,0 +1,19 @@
+<div class="page-header">
+  <h1>Expense#Show</h1>
+</div>
+
+<ul class="list-unstyled list-inline">
+  <li class="list-inline-item"><a href="<%= expensesPath() %>" class="btn btn-info">Back to all Expenses</a></li>
+  <li class="list-inline-item"><a href="<%= editExpensePath({ expense_id: expense.ID })%>" class="btn btn-warning">Edit</a></li>
+  <li class="list-inline-item"><a href="<%= expensePath({ expense_id: expense.ID })%>" data-method="DELETE" data-confirm="Are you sure?" class="btn btn-danger">Destroy</a>
+</ul>
+
+<p>
+  <strong>Name</strong>: <%= expense.Name %>
+</p>
+<p>
+  <strong>DocumentNumber</strong>: <%= expense.DocumentNumber %>
+</p>
+<p>
+  <strong>DateOfPayment</strong>: <%= expense.DateOfPayment %>
+</p>

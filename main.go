@@ -1,8 +1,9 @@
 package main
 
 import (
-	"accounting/actions"
 	"log"
+
+	"github.com/harsimranman/accounting/actions"
 )
 
 // main is the starting point for your Buffalo application.

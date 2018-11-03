@@ -1,0 +1,8 @@
+<div class="page-header">
+  <h1>New Receipt</h1>
+</div>
+
+<%= form_for(receipt, {action: receiptsPath(), method: "POST"}) { %>
+  <%= partial("receipts/form.html") %>
+  <a href="<%= receiptsPath() %>" class="btn btn-warning" data-confirm="Are you sure?">Cancel</a>
+<% } %>

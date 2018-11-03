@@ -1,7 +1,7 @@
 package actions
 
 import (
-	"accounting/models"
+	"github.com/harsimranman/accounting/models"
 
 	"github.com/gobuffalo/buffalo"
 	"github.com/gobuffalo/pop"

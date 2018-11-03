@@ -1,0 +1,6 @@
+- id: "wallet_entry.created.success"
+  translation: "WalletEntry was successfully created."
+- id: "wallet_entry.updated.success"
+  translation: "WalletEntry was successfully updated."
+- id: "wallet_entry.destroyed.success"
+  translation: "WalletEntry was successfully destroyed."

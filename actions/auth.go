@@ -1,10 +1,11 @@
 package actions
 
 import (
-	"accounting/models"
 	"database/sql"
 	"fmt"
 	"os"
+
+	"github.com/harsimranman/accounting/models"
 
 	"github.com/gobuffalo/buffalo"
 	"github.com/gobuffalo/pop"
@@ -101,7 +102,7 @@ func authorize(next buffalo.Handler) buffalo.Handler {
 	return func(c buffalo.Context) error {
 		if u := c.Value("current_user"); u == nil {
 			c.Flash().Add("danger", "You are not authorized to perform this action. Ask you admin for permission")
-			return c.Redirect(302,"/")
+			return c.Redirect(302, "/")
 		}
 		//req:= c.Request()
 		// user:= c.Value("current_user").(*models.User)

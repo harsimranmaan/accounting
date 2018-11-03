@@ -1,7 +1,7 @@
 package grifts
 
 import (
-	"accounting/models"
+	"github.com/harsimranman/accounting/models"
 
 	"github.com/gobuffalo/pop"
 	"github.com/markbates/grift/grift"

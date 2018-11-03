@@ -1,0 +1,9 @@
+create_table("expenses") {
+	t.Column("id", "uuid", {"primary": true})
+	t.Column("company_id", "uuid", {})
+	t.Column("name", "string", {})
+	t.Column("document_number", "string", {})
+	t.Column("date_of_payment", "timestamp", {})
+	t.ForeignKey("company_id", {"companies": ["id"]}, {"on_delete": "cascade"})
+
+}

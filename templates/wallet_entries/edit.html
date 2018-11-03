@@ -1,0 +1,8 @@
+<div class="page-header">
+  <h1>Edit WalletEntry</h1>
+</div>
+
+<%= form_for(walletEntry, {action: walletEntryPath({ wallet_entry_id: walletEntry.ID }), method: "PUT"}) { %>
+  <%= partial("wallet_entries/form.html") %>
+  <a href="<%= walletEntryPath({ wallet_entry_id: walletEntry.ID }) %>" class="btn btn-warning" data-confirm="Are you sure?">Cancel</a>
+<% } %>

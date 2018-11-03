@@ -1,0 +1,32 @@
+<div class="page-header">
+  <h1>Receipt#Show</h1>
+</div>
+
+<ul class="list-unstyled list-inline">
+  <li class="list-inline-item"><a href="<%= receiptsPath() %>" class="btn btn-info">Back to all Receipts</a></li>
+  <li class="list-inline-item"><a href="<%= editReceiptPath({ receipt_id: receipt.ID })%>" class="btn btn-warning">Edit</a></li>
+  <li class="list-inline-item"><a href="<%= receiptPath({ receipt_id: receipt.ID })%>" data-method="DELETE" data-confirm="Are you sure?" class="btn btn-danger">Destroy</a>
+</ul>
+
+<p>
+  <strong>ReceiptName</strong>: <%= receipt.ReceiptName %>
+</p>
+<p>
+  <strong>ReceiptNumber</strong>: <%= receipt.ReceiptNumber %>
+</p>
+<p>
+  <strong>ReceiptType</strong>: <%= receipt.ReceiptType %>
+</p>
+<p>
+  <strong>ReceiptDate</strong>: <%= receipt.ReceiptDate %>
+</p>
+<p>
+  <strong>Amount</strong>: <%= receipt.Amount %>
+</p>
+<p>
+    <strong>Project</strong>: <%= receipt.BudgetLine.Project.Name %>/<%= receipt.BudgetLine.Name %>
+  </p>
+<strong>PaymentDate</strong>: <%= receipt.PaymentDate %>
+</p>
+<strong>PaymentNote</strong>: <%= receipt.PaymentNote %>
+</p>

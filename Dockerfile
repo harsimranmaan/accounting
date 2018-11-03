@@ -2,14 +2,14 @@
 # https://docs.docker.com/engine/userguide/eng-image/multistage-build/
 FROM gobuffalo/buffalo:v0.13.1 as builder
 
-RUN mkdir -p $GOPATH/src/accounting
-WORKDIR $GOPATH/src/accounting
-
+RUN mkdir -p $GOPATH/src/github.com/harsimranmaan/accounting
+WORKDIR $GOPATH/src/github.com/harsimranmaan/accounting
+ENV GO111MODULE=on 
 # this will cache the npm install step, unless package.json changes
 ADD package.json .
 RUN npm install --no-progress
 ADD . .
-RUN go get $(go list ./... | grep -v /vendor/)
+RUN go get
 RUN buffalo build --static -o /bin/app
 
 FROM alpine

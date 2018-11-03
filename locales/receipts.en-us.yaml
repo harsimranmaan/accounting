@@ -1,0 +1,6 @@
+- id: "receipt.created.success"
+  translation: "Receipt was successfully created."
+- id: "receipt.updated.success"
+  translation: "Receipt was successfully updated."
+- id: "receipt.destroyed.success"
+  translation: "Receipt was successfully destroyed."

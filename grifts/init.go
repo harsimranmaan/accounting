@@ -1,7 +1,7 @@
 package grifts
 
 import (
-	"accounting/actions"
+	"github.com/harsimranman/accounting/actions"
 
 	"github.com/gobuffalo/buffalo"
 )

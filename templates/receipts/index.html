@@ -1,0 +1,37 @@
+<div class="page-header">
+  <h1>Receipts</h1>
+</div>
+<ul class="list-unstyled list-inline">
+  <li><a href="<%= newReceiptsPath() %>" class="btn btn-primary">Create New Receipt</a></li>
+</ul>
+
+<table class="table table-striped">
+  <thead>
+  <th>ReceiptName</th>
+    <th>ReceiptNumber</th>
+    <th>ReceiptType</th>
+    <th>ReceiptDate</th>
+    <th>&nbsp;</th>
+  </thead>
+  <tbody>
+    <%= for (receipt) in receipts { %>
+      <tr>
+      <td><%= receipt.ReceiptName %></td>
+        <td><%= receipt.ReceiptNumber %></td>
+        <td><%= receipt.BudgetLine.Project.Name %>/<%= receipt.BudgetLine.Name %></td>
+        <td><%= receipt.ReceiptDate %></td>
+        <td>
+          <div class="pull-right">
+            <a href="<%= receiptPath({ receipt_id: receipt.ID }) %>" class="btn btn-info">View</a>
+            <a href="<%= editReceiptPath({ receipt_id: receipt.ID }) %>" class="btn btn-warning">Edit/Pay</a>
+            <a href="<%= receiptPath({ receipt_id: receipt.ID }) %>" data-method="DELETE" data-confirm="Are you sure?" class="btn btn-danger">Destroy</a>
+          </div>
+        </td>
+      </tr>
+    <% } %>
+  </tbody>
+</table>
+
+<div class="text-center">
+  <%= paginator(pagination) %>
+</div>

@@ -1,0 +1,8 @@
+<div class="page-header">
+  <h1>Edit Receipt</h1>
+</div>
+
+<%= form_for(receipt, {action: receiptPath({ receipt_id: receipt.ID }), method: "PUT"}) { %>
+  <%= partial("receipts/form.html") %>
+  <a href="<%= receiptPath({ receipt_id: receipt.ID }) %>" class="btn btn-warning" data-confirm="Are you sure?">Cancel</a>
+<% } %>

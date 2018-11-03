@@ -66,6 +66,23 @@ CREATE TABLE public.companies (
 ALTER TABLE public.companies OWNER TO postgres;
 
 --
+-- Name: expenses; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.expenses (
+    id uuid NOT NULL,
+    company_id uuid NOT NULL,
+    name character varying(255) NOT NULL,
+    document_number character varying(255) NOT NULL,
+    date_of_payment timestamp without time zone NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.expenses OWNER TO postgres;
+
+--
 -- Name: group_members; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -131,6 +148,28 @@ CREATE TABLE public.projects (
 ALTER TABLE public.projects OWNER TO postgres;
 
 --
+-- Name: receipts; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.receipts (
+    id uuid NOT NULL,
+    company_id uuid NOT NULL,
+    receipt_name character varying(255) NOT NULL,
+    receipt_number character varying(255) NOT NULL,
+    receipt_type character varying(255) NOT NULL,
+    receipt_date timestamp without time zone NOT NULL,
+    budget_line_id uuid NOT NULL,
+    payment_note character varying(255),
+    payment_date timestamp without time zone,
+    amount numeric(12,2) NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.receipts OWNER TO postgres;
+
+--
 -- Name: schema_migration; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -175,6 +214,23 @@ CREATE TABLE public.users_auth_providers (
 ALTER TABLE public.users_auth_providers OWNER TO postgres;
 
 --
+-- Name: wallet_entries; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.wallet_entries (
+    id uuid NOT NULL,
+    company_id uuid NOT NULL,
+    receipt_id uuid,
+    notes character varying(255),
+    amount numeric,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.wallet_entries OWNER TO postgres;
+
+--
 -- Name: budget_lines budget_lines_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -188,6 +244,14 @@ ALTER TABLE ONLY public.budget_lines
 
 ALTER TABLE ONLY public.companies
     ADD CONSTRAINT companies_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: expenses expenses_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.expenses
+    ADD CONSTRAINT expenses_pkey PRIMARY KEY (id);
 
 
 --
@@ -223,6 +287,14 @@ ALTER TABLE ONLY public.projects
 
 
 --
+-- Name: receipts receipts_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.receipts
+    ADD CONSTRAINT receipts_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: users_auth_providers users_auth_providers_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -236,6 +308,14 @@ ALTER TABLE ONLY public.users_auth_providers
 
 ALTER TABLE ONLY public.users
     ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: wallet_entries wallet_entries_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.wallet_entries
+    ADD CONSTRAINT wallet_entries_pkey PRIMARY KEY (id);
 
 
 --
@@ -303,6 +383,14 @@ ALTER TABLE ONLY public.budget_lines
 
 
 --
+-- Name: expenses expenses_company_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.expenses
+    ADD CONSTRAINT expenses_company_id_fkey FOREIGN KEY (company_id) REFERENCES public.companies(id) ON DELETE CASCADE;
+
+
+--
 -- Name: group_members group_members_company_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -359,6 +447,22 @@ ALTER TABLE ONLY public.projects
 
 
 --
+-- Name: receipts receipts_budget_line_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.receipts
+    ADD CONSTRAINT receipts_budget_line_id_fkey FOREIGN KEY (budget_line_id) REFERENCES public.budget_lines(id) ON DELETE RESTRICT;
+
+
+--
+-- Name: receipts receipts_company_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.receipts
+    ADD CONSTRAINT receipts_company_id_fkey FOREIGN KEY (company_id) REFERENCES public.companies(id) ON DELETE CASCADE;
+
+
+--
 -- Name: users_auth_providers users_auth_providers_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -372,6 +476,22 @@ ALTER TABLE ONLY public.users_auth_providers
 
 ALTER TABLE ONLY public.users
     ADD CONSTRAINT users_company_id_fkey FOREIGN KEY (company_id) REFERENCES public.companies(id) ON DELETE CASCADE;
+
+
+--
+-- Name: wallet_entries wallet_entries_company_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.wallet_entries
+    ADD CONSTRAINT wallet_entries_company_id_fkey FOREIGN KEY (company_id) REFERENCES public.companies(id) ON DELETE CASCADE;
+
+
+--
+-- Name: wallet_entries wallet_entries_receipt_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.wallet_entries
+    ADD CONSTRAINT wallet_entries_receipt_id_fkey FOREIGN KEY (receipt_id) REFERENCES public.receipts(id) ON DELETE RESTRICT;
 
 
 --

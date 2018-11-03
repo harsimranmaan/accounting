@@ -1,0 +1,9 @@
+<div class="page-header">
+    <h1>Pay Receipt</h1>
+</div>
+<%= form_for(receipt, {action: receiptPath({ receipt_id: receipt.ID }), method: "PUT"}) { %>
+<%= f.InputTag("PaymentDate") %>
+<%= f.InputTag("Notes") %>
+<a href="<%= receiptPath({ receipt_id: receipt.ID }) %>" class="btn btn-warning" data-confirm="Are you sure?">Cancel</a>
+<% } %>
+      

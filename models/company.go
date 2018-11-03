@@ -19,6 +19,8 @@ type Company struct {
 	IsActive   bool      `json:"is_active" db:"is_active"`
 	Projects   Projects  `has_many:"projects"`
 	Users      Users     `has_many:"users"`
+	Receipts   Receipts  `has_many:"receipts"`
+	Expenses   Expenses  `has_many:"expenses"`
 }
 
 // String is not required by pop and may be deleted

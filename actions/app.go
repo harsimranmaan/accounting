@@ -1,7 +1,7 @@
 package actions
 
 import (
-	"accounting/models"
+	"github.com/harsimranman/accounting/models"
 
 	"github.com/gobuffalo/buffalo"
 	"github.com/gobuffalo/buffalo-pop/pop/popmw"
@@ -60,11 +60,13 @@ func App() *buffalo.App {
 		app.Use(translations())
 
 		app.GET("/", HomeHandler)
-		app.Middleware.Skip(authorize,HomeHandler)
+		app.GET("/routes", RoutesHandler)
+		app.Middleware.Skip(authorize, HomeHandler)
+		app.Middleware.Skip(authorize, RoutesHandler)
 		app.Resource("/companies", CompaniesResource{})
 		app.Resource("/users", UsersResource{})
 		p := app.Resource("/projects", ProjectsResource{})
-		b:=p.Resource("/budget_lines", BudgetLinesResource{})
+		b := p.Resource("/budget_lines", BudgetLinesResource{})
 		b.Use(setProject)
 		auth := app.Group("/auth")
 		bah := buffalo.WrapHandlerFunc(gothic.BeginAuthHandler)
@@ -77,6 +79,16 @@ func App() *buffalo.App {
 		app.Resource("/group_members", GroupMembersResource{})
 
 		app.Resource("/groups", GroupsResource{})
+
+		app.Resource("/expenses", ExpensesResource{})
+		rr := ReceiptsResource{}
+		r:=app.Resource("/receipts", rr)
+		rb := b.Resource("/receipts", rr)
+		rb.Use(setBudgetLine)
+		wr := WalletEntriesResource{}
+		app.Resource("/wallet_entries", wr)
+		r.GET("/pay", wr.Pay)
+		r.POST("/make_payment", wr.MakePayment)
 		app.ServeFiles("/", assetsBox) // serve files from the public directory
 	}
 

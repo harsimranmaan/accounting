@@ -1,0 +1,36 @@
+<div class="page-header">
+  <h1>WalletEntries</h1>
+</div>
+<ul class="list-unstyled list-inline">
+  <li><a href="<%= newWalletEntriesPath() %>" class="btn btn-primary">Create New WalletEntry</a></li>
+</ul>
+
+<table class="table table-striped">
+  <thead>
+  <th>CompanyID</th>
+    <th>Notes</th>
+    <th>Amount</th>
+    <th>ExpenseID</th>
+    <th>&nbsp;</th>
+  </thead>
+  <tbody>
+    <%= for (walletEntry) in walletEntries { %>
+      <tr>
+        <td><%= walletEntry.Notes %></td>
+        <td><%= walletEntry.Amount %></td>
+        <td><%= walletEntry.Receipt.ID %></td>
+        <td>
+          <div class="pull-right">
+            <a href="<%= walletEntryPath({ wallet_entry_id: walletEntry.ID }) %>" class="btn btn-info">View</a>
+            <a href="<%= editWalletEntryPath({ wallet_entry_id: walletEntry.ID }) %>" class="btn btn-warning">Edit</a>
+            <a href="<%= walletEntryPath({ wallet_entry_id: walletEntry.ID }) %>" data-method="DELETE" data-confirm="Are you sure?" class="btn btn-danger">Destroy</a>
+          </div>
+        </td>
+      </tr>
+    <% } %>
+  </tbody>
+</table>
+
+<div class="text-center">
+  <%= paginator(pagination) %>
+</div>

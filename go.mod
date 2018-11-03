@@ -1,4 +1,4 @@
-module accounting
+module github.com/harsimranman/accounting
 
 require (
 	github.com/gobuffalo/buffalo v0.13.1

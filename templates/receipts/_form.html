@@ -1,0 +1,21 @@
+<%= f.InputTag("ReceiptName") %>
+<%= f.InputTag("ReceiptNumber") %>
+<%= f.SelectTag("ReceiptType", {options: ["Receipt", "Bill"]}) %>
+<%= f.InputTag("ReceiptDate",{ type:"date"}) %>
+<%= f.InputTag("Amount") %>
+<div class="form-group">
+<label>Project Budget line</label>
+<select name="BudgetLineID" class="form-control">
+    <%= for (project) in current_user.Company.Projects { %>
+    <optgroup label="<%= project.Name %>">
+        <%= for (bl) in project.BudgetLines { %>
+    <%= if (receipt.BudgetLineID == bl.ID) { %>
+      <option selected value="<%= bl.ID %>"><%= bl.Name %></option>
+      <% } else { %>
+      <option value="<%= bl.ID %>"><%= bl.Name %></option>
+      <% } %>
+    </optgroup>
+    <% } %>
+  </select>
+  </div>
+<button class="btn btn-success" role="submit">Save</button>

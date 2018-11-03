@@ -26,14 +26,18 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav mr-auto">
             <li class="nav-item">
-              <a class="nav-link" href="<%= companiesPath() %>">Companies</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="<%= usersPath() %>">Users</a>
-            </li>
-            <li class="nav-item">
               <a class="nav-link" href="<%= projectsPath() %>">Projects</a>
             </li>
+              <li class="nav-item">
+                  <a class="nav-link" href="<%= expensesPath() %>">Expenses</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="<%= receiptsPath() %>">Receipts</a>
+                  </li>
+            <li class="nav-item">
+              <a class="nav-link" href="<%= walletEntriesPath() %>">Wallet</a>
+            </li>
+    
           </ul>
           <span class="navbar-text">
               <%=  if (current_user) { %>

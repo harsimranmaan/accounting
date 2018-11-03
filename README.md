@@ -15,6 +15,8 @@ buffalo db migrate
 buffalo dev
 ```
 
+Set GOOGLE_KEY and GOOGLE_SECRET from your google api account for auth.
+
 Go to [http://localhost:3000](http://localhost:3000)
 
 

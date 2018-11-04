@@ -2,7 +2,9 @@
   <h1>Edit BudgetLine</h1>
 </div>
 
-<%= form_for(budgetLine, {action: projectBudgetLinePath({ project_id: current_project.ID, budget_line_id: budgetLine.ID }), method: "PUT"}) { %>
+<%= form_for(budgetLine, {action: projectBudgetLinePath({ project_id: currentProject.ID, budget_line_id: budgetLine.ID }), method: "PUT"}) { %>
   <%= partial("budget_lines/form.html") %>
-  <a href="<%= projectBudgetLinePath({ project_id: current_project.ID, budget_line_id: budgetLine.ID }) %>" class="btn btn-warning" data-confirm="Are you sure?">Cancel</a>
+  <a href="<%= projectBudgetLinePath({ project_id: currentProject.ID, budget_line_id: budgetLine.ID }) %>" class="btn btn-warning" data-confirm="Are you sure?">Cancel</a>
+  <a href="<%= projectBudgetLinePath({ project_id: currentProject.ID, budget_line_id: budgetLine.ID }) %>"
+    data-method="DELETE" data-confirm="Are you sure?" class="btn btn-danger">Destroy</a>
 <% } %>

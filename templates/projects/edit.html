@@ -4,5 +4,6 @@
 
 <%= form_for(project, {action: projectPath({ project_id: project.ID }), method: "PUT"}) { %>
   <%= partial("projects/form.html") %>
-  <a href="<%= projectPath({ project_id: project.ID }) %>" class="btn btn-warning" data-confirm="Are you sure?">Cancel</a>
+  <a href="<%= projectBudgetLinesPath({ project_id: project.ID }) %>" class="btn btn-warning" data-confirm="Are you sure?">Cancel</a>
+  <a href="<%= projectPath({ project_id: project.ID }) %>" data-method="DELETE" data-confirm="Are you sure?" class="btn btn-danger">Destroy</a>
 <% } %>

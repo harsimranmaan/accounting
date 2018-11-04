@@ -7,7 +7,7 @@
 
 <table class="table table-striped">
   <thead>
-  <th>Name</th>
+  <th>Project</th>
     <th>IsActive</th>
     <th>&nbsp;</th>
   </thead>
@@ -18,9 +18,8 @@
         <td><%= project.IsActive %></td>
         <td>
           <div class="pull-right">
-            <a href="<%= projectPath({ project_id: project.ID }) %>" class="btn btn-info">View</a>
+            <a href="<%= projectBudgetLinesPath({ project_id: project.ID }) %>" class="btn btn-info">View Budget</a>
             <a href="<%= editProjectPath({ project_id: project.ID }) %>" class="btn btn-warning">Edit</a>
-            <a href="<%= projectPath({ project_id: project.ID }) %>" data-method="DELETE" data-confirm="Are you sure?" class="btn btn-danger">Destroy</a>
           </div>
         </td>
       </tr>

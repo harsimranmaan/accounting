@@ -1,16 +1,33 @@
 <div class="page-header">
-  <h1>Receipts</h1>
+  <h1>Receipts <%= currentBudgetLine.Name %></h1>
 </div>
 <ul class="list-unstyled list-inline">
-  <li><a href="<%= newReceiptsPath() %>" class="btn btn-primary">Create New Receipt</a></li>
+  <li class="list-inline-item"><a href="<%= newReceiptsPath() %>" class="btn btn-primary">Create New Receipt</a></li>
+  <%= if (nullUuid != currentBudgetLine.ID) { %>
+  <li class="list-inline-item"><a href="<%= editProjectBudgetLinePath({ project_id: currentBudgetLine.Project.ID, budget_line_id: currentBudgetLine.ID }) %>" class="btn btn-warning">Edit Budget line</a></li>
+  <% } %>
 </ul>
+<%= if (nullUuid != currentBudgetLine.ID) { %>
+<p>
+  <strong>Name</strong>: 
+</p>
+<p>
+  <strong>Total Amount</strong>: <%= currentBudgetLine.Amount %>
+</p>
+<p>
+    <strong>Remaining Amount</strong>: <%= currentBudgetLine.RemainingAmount() %>
+  </p>
+<% } %>
+
 
 <table class="table table-striped">
   <thead>
   <th>ReceiptName</th>
     <th>ReceiptNumber</th>
     <th>ReceiptType</th>
+    <th>Project</th>
     <th>ReceiptDate</th>
+    <th>ReceiptAmount</th>
     <th>&nbsp;</th>
   </thead>
   <tbody>
@@ -18,12 +35,15 @@
       <tr>
       <td><%= receipt.ReceiptName %></td>
         <td><%= receipt.ReceiptNumber %></td>
+        <td><%= receipt.ReceiptType %></td>
         <td><%= receipt.BudgetLine.Project.Name %>/<%= receipt.BudgetLine.Name %></td>
         <td><%= receipt.ReceiptDate %></td>
+        <td><%= receipt.Amount %></td>
         <td>
           <div class="pull-right">
             <a href="<%= receiptPath({ receipt_id: receipt.ID }) %>" class="btn btn-info">View</a>
-            <a href="<%= editReceiptPath({ receipt_id: receipt.ID }) %>" class="btn btn-warning">Edit/Pay</a>
+            <a href="<%= editReceiptPath({ receipt_id: receipt.ID }) %>" class="btn btn-warning">Edit</a>
+            <a href="<%= receiptPayPath({ receipt_id: receipt.ID }) %>" class="btn btn-warning">Pay</a>
             <a href="<%= receiptPath({ receipt_id: receipt.ID }) %>" data-method="DELETE" data-confirm="Are you sure?" class="btn btn-danger">Destroy</a>
           </div>
         </td>

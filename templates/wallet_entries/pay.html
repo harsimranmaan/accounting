@@ -1,0 +1,9 @@
+<div class="page-header">
+    <h1>Pay Receipt</h1>
+</div>
+<%= form_for(walletEntry, {action: receiptMakePaymentPath({ receipt_id: walletEntry.ReceiptID }), method: "POST"}) { %>
+<%= f.InputTag("PaymentDate",{type: "date"}) %>
+<%= f.SelectTag("PaymentType", {options: ["Cash", "Bank"]}) %>
+<%= f.InputTag("Notes") %>
+<button class="btn btn-success" role="submit">Pay</button>
+<% } %>

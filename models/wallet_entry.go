@@ -18,6 +18,7 @@ type WalletEntry struct {
 	Notes       string    `json:"notes" db:"notes"`
 	Amount      float64   `json:"amount" db:"amount"`
 	PaymentDate time.Time `json:"payment_date" db:"payment_date"`
+	PaymentType string    `json:"payment_type" db:"payment_type"`
 	ReceiptID   uuid.UUID `json:"receipt_id" db:"receipt_id"`
 	Receipt     Receipt   `belongs_to:"receipt"`
 }

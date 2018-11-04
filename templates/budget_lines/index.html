@@ -1,29 +1,52 @@
 <div class="page-header">
-  <h1>BudgetLines</h1>
+  <h1>Budget for project
+    <%= currentProject.Name %>
+  </h1>
 </div>
+
+
 <ul class="list-unstyled list-inline">
-  <li><a href="<%= newProjectBudgetLinesPath({ project_id: current_project.ID }) %>" class="btn btn-primary">Create New BudgetLine</a> <a href="<%= projectPath({ project_id: current_project.ID }) %>" class="btn btn-light">Back to Project <%= current_project.Name %></a></li>
+  <li class="list-inline-item"><a href="<%= newProjectBudgetLinesPath({ project_id: currentProject.ID }) %>" class="btn btn-primary">Create
+      New
+      BudgetLine</a></li>
+  <li class="list-inline-item"><a href="<%= editProjectPath({ project_id: currentProject.ID })%>" class="btn btn-warning">Edit
+      Project</a></li>
+
 </ul>
+<p>
+  <strong>Total Budget</strong>:
+  <%= currentProject.Budget() %>
+</p>
+
+<p>
+  <strong>Remaining Budget</strong>:
+  <%= currentProject.RemainingBudget() %>
+</p>
 
 <table class="table table-striped">
   <thead>
-  <th>Name</th>
+    <th>Name</th>
     <th>Amount</th>
     <th>&nbsp;</th>
   </thead>
   <tbody>
     <%= for (budgetLine) in budgetLines { %>
-      <tr>
-      <td><%= budgetLine.Name %></td>
-        <td><%= budgetLine.Amount %></td>
-        <td>
-          <div class="pull-right">
-            <a href="<%= projectBudgetLinePath({ project_id: current_project.ID, budget_line_id: budgetLine.ID }) %>" class="btn btn-info">View</a>
-            <a href="<%= editProjectBudgetLinePath({ project_id: current_project.ID, budget_line_id: budgetLine.ID }) %>" class="btn btn-warning">Edit</a>
-            <a href="<%= projectBudgetLinePath({ project_id: current_project.ID, budget_line_id: budgetLine.ID }) %>" data-method="DELETE" data-confirm="Are you sure?" class="btn btn-danger">Destroy</a>
-          </div>
-        </td>
-      </tr>
+    <tr>
+      <td>
+        <%= budgetLine.Name %>
+      </td>
+      <td>
+        <%= budgetLine.Amount %>
+      </td>
+      <td>
+        <div class="pull-right">
+          <a href="<%= projectBudgetLineReceiptsPath({ project_id: currentProject.ID, budget_line_id: budgetLine.ID }) %>"
+            class="btn btn-info">View Receipts</a>
+          <a href="<%= editProjectBudgetLinePath({ project_id: currentProject.ID, budget_line_id: budgetLine.ID }) %>"
+            class="btn btn-warning">Edit</a>
+        </div>
+      </td>
+    </tr>
     <% } %>
   </tbody>
 </table>

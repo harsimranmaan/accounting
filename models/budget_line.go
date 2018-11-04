@@ -18,6 +18,7 @@ type BudgetLine struct {
 	Amount    float64   `json:"amount" db:"amount"`
 	ProjectID uuid.UUID `json:"project_id" db:"project_id"`
 	Project   Project   `belongs_to:"project"`
+	Receipts  Receipts  `has_many:"receipts"`
 }
 
 // String is not required by pop and may be deleted
@@ -53,4 +54,13 @@ func (b *BudgetLine) ValidateCreate(tx *pop.Connection) (*validate.Errors, error
 // This method is not required and may be deleted.
 func (b *BudgetLine) ValidateUpdate(tx *pop.Connection) (*validate.Errors, error) {
 	return validate.NewErrors(), nil
+}
+
+func (b *BudgetLine) UsedAmount() float64 {
+	r := &Receipt{}
+	DB.Where("budget_line_id = ?", b.ID).Select("sum(amount) as amount").First(r)
+	return r.Amount
+}
+func (b *BudgetLine) RemainingAmount() float64 {
+	return b.Amount - b.UsedAmount()
 }

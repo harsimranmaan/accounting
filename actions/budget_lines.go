@@ -35,7 +35,8 @@ func (v BudgetLinesResource) List(c buffalo.Context) error {
 	}
 
 	budgetLines := &models.BudgetLines{}
-	pid := (c.Value("current_project").(*models.Project)).ID
+	currentProject := c.Value("currentProject").(*models.Project)
+	pid := currentProject.ID
 	// Paginate results. Params "page" and "per_page" control pagination.
 	// Default values are "page=1" and "per_page=20".
 	q := tx.PaginateFromParams(c.Params())
@@ -47,7 +48,8 @@ func (v BudgetLinesResource) List(c buffalo.Context) error {
 
 	// Add the paginator to the context so it can be used in the template.
 	c.Set("pagination", q.Paginator)
-
+	
+	currentProject.BudgetLines = *budgetLines
 	return c.Render(200, r.Auto(c, budgetLines))
 }
 
@@ -64,7 +66,7 @@ func (v BudgetLinesResource) Show(c buffalo.Context) error {
 	budgetLine := &models.BudgetLine{}
 
 	// To find the BudgetLine the parameter budget_line_id is used.
-	if err := tx.Find(budgetLine, c.Param("budget_line_id")); err != nil {
+	if err := tx.Eager("Receipts").Find(budgetLine, c.Param("budget_line_id")); err != nil {
 		return c.Error(404, err)
 	}
 
@@ -92,7 +94,7 @@ func (v BudgetLinesResource) Create(c buffalo.Context) error {
 	if !ok {
 		return errors.WithStack(errors.New("no transaction found"))
 	}
-	pid := (c.Value("current_project").(*models.Project)).ID
+	pid := (c.Value("currentProject").(*models.Project)).ID
 	budgetLine.ProjectID = pid
 	// Validate the data from the html form
 	verrs, err := tx.ValidateAndCreate(budgetLine)

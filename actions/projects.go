@@ -39,7 +39,7 @@ func (v ProjectsResource) List(c buffalo.Context) error {
 	// Paginate results. Params "page" and "per_page" control pagination.
 	// Default values are "page=1" and "per_page=20".
 	q := tx.PaginateFromParams(c.Params())
-	cid := (c.Value("current_user").(*models.User)).CompanyID
+	cid := (c.Value("currentUser").(*models.User)).CompanyID
 	// Retrieve all Projects from the DB
 	if err := q.Where("company_id = ?", cid).All(projects); err != nil {
 		return errors.WithStack(err)
@@ -87,7 +87,7 @@ func (v ProjectsResource) Create(c buffalo.Context) error {
 	if err := c.Bind(project); err != nil {
 		return errors.WithStack(err)
 	}
-	project.CompanyID = (c.Value("current_user").(*models.User)).CompanyID
+	project.CompanyID = (c.Value("currentUser").(*models.User)).CompanyID
 	// Get the DB connection from the context
 	tx, ok := c.Value("tx").(*pop.Connection)
 	if !ok {

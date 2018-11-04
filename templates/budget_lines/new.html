@@ -2,7 +2,7 @@
   <h1>New BudgetLine</h1>
 </div>
 
-<%= form_for(budgetLine, {action: projectBudgetLinesPath({project_id: current_project.ID}), method: "POST"}) { %>
+<%= form_for(budgetLine, {action: projectBudgetLinesPath({project_id: currentProject.ID}), method: "POST"}) { %>
   <%= partial("budget_lines/form.html") %>
-  <a href="<%= projectBudgetLinesPath({project_id: current_project.ID}) %>" class="btn btn-warning" data-confirm="Are you sure?">Cancel</a>
+  <a href="<%= projectBudgetLinesPath({project_id: currentProject.ID}) %>" class="btn btn-warning" data-confirm="Are you sure?">Cancel</a>
 <% } %>

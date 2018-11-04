@@ -124,7 +124,7 @@ func (w WalletEntriesResource) Pay(c buffalo.Context) error {
 	if !ok {
 		return errors.WithStack(errors.New("no transaction found"))
 	}
-	company := (c.Value("current_user").(*models.User)).Company
+	company := (c.Value("currentUser").(*models.User)).Company
 	
 	// Allocate an empty Receipt
 	receipt := &models.Receipt{}
@@ -132,14 +132,9 @@ func (w WalletEntriesResource) Pay(c buffalo.Context) error {
 	if err := tx.Where("company_id = ?", company.ID).Find(receipt, c.Param("receipt_id")); err != nil {
 		return c.Error(404, err)
 	}
-
-	if err := tx.Eager("Projects.BudgetLines").Find(&company, company.ID); err != nil {
-		return err
-	}
-	t := time.Now().Format("2006-01-02")
-	c.Set("today", t)
-
-	return c.Render(200, r.Auto(c, receipt))
+	walletEntry := &models.WalletEntry{ReceiptID: receipt.ID, PaymentDate: time.Now()}
+	c.Set("walletEntry", walletEntry)
+	return c.Render(200, r.HTML("wallet_entries/pay.html"))
 }
 // MakePayment records a Receipt payment in the DB. This function is mapped to
 // the path POST /receipts/{receipt_id}/make_payment
@@ -149,7 +144,7 @@ func (w WalletEntriesResource) MakePayment(c buffalo.Context) error {
 	if !ok {
 		return errors.WithStack(errors.New("no transaction found"))
 	}
-	cid := (c.Value("current_user").(*models.User)).CompanyID
+	cid := (c.Value("currentUser").(*models.User)).CompanyID
 
 	// Allocate an empty Receipt
 	receipt := &models.Receipt{}
@@ -163,8 +158,10 @@ func (w WalletEntriesResource) MakePayment(c buffalo.Context) error {
 	if err := c.Bind(walletEntry); err != nil {
 		return errors.WithStack(err)
 	}
-	receipt.CompanyID = cid
-	verrs, err := tx.ValidateAndUpdate(receipt)
+	walletEntry.CompanyID = cid
+	walletEntry.Amount = receipt.Amount
+	walletEntry.ReceiptID= receipt.ID
+	verrs, err := tx.ValidateAndCreate(walletEntry)
 	if err != nil {
 		return errors.WithStack(err)
 	}
@@ -179,10 +176,10 @@ func (w WalletEntriesResource) MakePayment(c buffalo.Context) error {
 	}
 
 	// If there are no errors set a success message
-	c.Flash().Add("success", "Receipt was updated successfully")
+	c.Flash().Add("success", "Receipt was paid successfully")
 
 	// and redirect to the receipts index page
-	return c.Render(200, r.Auto(c, receipt))
+	return c.Render(200, r.Auto(c, walletEntry))	
 }
 
 // Edit renders a edit form for a WalletEntry. This function is

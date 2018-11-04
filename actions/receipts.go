@@ -40,10 +40,12 @@ func (v ReceiptsResource) List(c buffalo.Context) error {
 	// Paginate results. Params "page" and "per_page" control pagination.
 	// Default values are "page=1" and "per_page=20".
 	q := tx.PaginateFromParams(c.Params())
-	cid := (c.Value("current_user").(*models.User)).CompanyID
-	if c.Value("current_budget_line") !=nil{
-		bl:=c.Value("current_budget_line").(*models.BudgetLine)
+	cid := (c.Value("currentUser").(*models.User)).CompanyID
+	if c.Value("currentBudgetLine") != nil {
+		bl := c.Value("currentBudgetLine").(*models.BudgetLine)
 		q.Where("budget_line_id = ?", bl.ID)
+	}else{
+		c.Set("currentBudgetLine", models.BudgetLine{})
 	}
 	// Retrieve all Receipts from the DB
 	if err := q.Where("company_id = ?", cid).All(receipts); err != nil {
@@ -67,7 +69,7 @@ func (v ReceiptsResource) Show(c buffalo.Context) error {
 
 	// Allocate an empty Receipt
 	receipt := &models.Receipt{}
-	cid := (c.Value("current_user").(*models.User)).CompanyID
+	cid := (c.Value("currentUser").(*models.User)).CompanyID
 
 	// To find the Receipt the parameter receipt_id is used.
 	if err := tx.Eager("BudgetLine.Project").Where("company_id = ?", cid).Find(receipt, c.Param("receipt_id")); err != nil {
@@ -84,10 +86,15 @@ func (v ReceiptsResource) New(c buffalo.Context) error {
 	if !ok {
 		return errors.WithStack(errors.New("no transaction found"))
 	}
-	if err := tx.Eager("Projects.BudgetLines").First(&(c.Value("current_user").(*models.User)).Company); err != nil {
+	if err := tx.Eager("Projects.BudgetLines").First(&(c.Value("currentUser").(*models.User)).Company); err != nil {
 		return err
 	}
-	return c.Render(200, r.Auto(c, &models.Receipt{ ReceiptDate: time.Now()}))
+	rc := &models.Receipt{ReceiptDate: time.Now()}
+	if c.Value("currentBudgetLine") != nil {
+		bl := c.Value("currentBudgetLine").(*models.BudgetLine)
+		rc.BudgetLineID = bl.ID
+	}
+	return c.Render(200, r.Auto(c, rc))
 }
 
 // Create adds a Receipt to the DB. This function is mapped to the
@@ -100,7 +107,7 @@ func (v ReceiptsResource) Create(c buffalo.Context) error {
 	if err := c.Bind(receipt); err != nil {
 		return errors.WithStack(err)
 	}
-	cid := (c.Value("current_user").(*models.User)).CompanyID
+	cid := (c.Value("currentUser").(*models.User)).CompanyID
 	receipt.CompanyID = cid
 	// Get the DB connection from the context
 	tx, ok := c.Value("tx").(*pop.Connection)
@@ -138,19 +145,17 @@ func (v ReceiptsResource) Edit(c buffalo.Context) error {
 	if !ok {
 		return errors.WithStack(errors.New("no transaction found"))
 	}
-	company := (c.Value("current_user").(*models.User)).Company
-	
+	company := (c.Value("currentUser").(*models.User)).Company
+
 	// Allocate an empty Receipt
 	receipt := &models.Receipt{}
-	
+
 	if err := tx.Where("company_id = ?", company.ID).Find(receipt, c.Param("receipt_id")); err != nil {
 		return c.Error(404, err)
 	}
 	if err := tx.Eager("Projects.BudgetLines").Find(&company, company.ID); err != nil {
 		return err
 	}
-	t := time.Now().Format("2006-01-02")
-	c.Set("today", t)
 
 	return c.Render(200, r.Auto(c, receipt))
 }
@@ -163,7 +168,7 @@ func (v ReceiptsResource) Update(c buffalo.Context) error {
 	if !ok {
 		return errors.WithStack(errors.New("no transaction found"))
 	}
-	cid := (c.Value("current_user").(*models.User)).CompanyID
+	cid := (c.Value("currentUser").(*models.User)).CompanyID
 
 	// Allocate an empty Receipt
 	receipt := &models.Receipt{}
@@ -206,7 +211,7 @@ func (v ReceiptsResource) Destroy(c buffalo.Context) error {
 	if !ok {
 		return errors.WithStack(errors.New("no transaction found"))
 	}
-	cid := (c.Value("current_user").(*models.User)).CompanyID
+	cid := (c.Value("currentUser").(*models.User)).CompanyID
 
 	// Allocate an empty Receipt
 	receipt := &models.Receipt{}

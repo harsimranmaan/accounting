@@ -7,10 +7,9 @@
 
 <table class="table table-striped">
   <thead>
-  <th>CompanyID</th>
     <th>Notes</th>
     <th>Amount</th>
-    <th>ExpenseID</th>
+    <th>Receipt</th>
     <th>&nbsp;</th>
   </thead>
   <tbody>
@@ -18,7 +17,7 @@
       <tr>
         <td><%= walletEntry.Notes %></td>
         <td><%= walletEntry.Amount %></td>
-        <td><%= walletEntry.Receipt.ID %></td>
+        <td><%= walletEntry.Receipt.ReceiptName %>/<%= walletEntry.Receipt.ReceiptNumber %></td>
         <td>
           <div class="pull-right">
             <a href="<%= walletEntryPath({ wallet_entry_id: walletEntry.ID }) %>" class="btn btn-info">View</a>

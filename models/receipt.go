@@ -20,7 +20,7 @@ type Receipt struct {
 	ReceiptDate   time.Time  `json:"receipt_date" db:"receipt_date"`
 	Amount        float64    `json:"amount" db:"amount"`
 	BudgetLineID  uuid.UUID  `json:"budget_line_id" db:"budget_line_id"`
-	BudgetLine    BudgetLine `belongs_to:"company"`
+	BudgetLine    BudgetLine `belongs_to:"budget_line"`
 	CompanyID     uuid.UUID  `json:"company_id" db:"company_id"`
 	Company       Company    `belongs_to:"company"`
 	//WalletEntry   WalletEntry `has_one:"wallet_entry" fk_id:"receipt_id"`

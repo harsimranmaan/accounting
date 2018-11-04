@@ -64,9 +64,19 @@ func (p *Project) ValidateUpdate(tx *pop.Connection) (*validate.Errors, error) {
 
 // Budget returns the total allocated budget for a project
 func (p *Project) Budget() float64 {
-	budget := 0.0
-	for _, budgetLine := range p.BudgetLines {
-		budget += budgetLine.Amount
-	}
-	return budget
+	budgetLine := &BudgetLine{}
+	DB.Where("project_id = ?", p.ID).Select("sum(amount) as amount").First(budgetLine)
+	return budgetLine.Amount
+}
+
+// RemainingBudget returns the remaining allocated budget for a project
+func (p *Project) RemainingBudget() float64 {
+	return p.Budget() - p.UsedBudget()
+}
+
+// UsedBudget returns the budfget that has been used for a project
+func (p *Project) UsedBudget() float64 {
+	receipt := &Receipt{}
+	DB.Where("project_id = ?", p.ID).Select("sum(receipts.amount) as amount").LeftJoin("budget_lines", "receipts.budget_line_id = budget_lines.id").First(receipt)
+	return receipt.Amount
 }

@@ -34,7 +34,7 @@ func (v ExpensesResource) List(c buffalo.Context) error {
 	}
 
 	expenses := &models.Expenses{}
-	cid := (c.Value("current_user").(*models.User)).CompanyID
+	cid := (c.Value("currentUser").(*models.User)).CompanyID
 	// Paginate results. Params "page" and "per_page" control pagination.
 	// Default values are "page=1" and "per_page=20".
 	q := tx.PaginateFromParams(c.Params())
@@ -61,7 +61,7 @@ func (v ExpensesResource) Show(c buffalo.Context) error {
 
 	// Allocate an empty Expense
 	expense := &models.Expense{}
-	cid := (c.Value("current_user").(*models.User)).CompanyID
+	cid := (c.Value("currentUser").(*models.User)).CompanyID
 
 	// To find the Expense the parameter expense_id is used.
 	if err := tx.Where("company_id = ?", cid).Find(expense, c.Param("expense_id")); err != nil {
@@ -87,7 +87,7 @@ func (v ExpensesResource) Create(c buffalo.Context) error {
 	if err := c.Bind(expense); err != nil {
 		return errors.WithStack(err)
 	}
-	expense.CompanyID= (c.Value("current_user").(*models.User)).CompanyID
+	expense.CompanyID= (c.Value("currentUser").(*models.User)).CompanyID
 	// Get the DB connection from the context
 	tx, ok := c.Value("tx").(*pop.Connection)
 	if !ok {
@@ -127,7 +127,7 @@ func (v ExpensesResource) Edit(c buffalo.Context) error {
 
 	// Allocate an empty Expense
 	expense := &models.Expense{}
-	cid := (c.Value("current_user").(*models.User)).CompanyID
+	cid := (c.Value("currentUser").(*models.User)).CompanyID
 
 	if err := tx.Where("company_id = ?", cid).Find(expense, c.Param("expense_id")); err != nil {
 		return c.Error(404, err)
@@ -148,7 +148,7 @@ func (v ExpensesResource) Update(c buffalo.Context) error {
 	// Allocate an empty Expense
 	expense := &models.Expense{}
 
-	cid := (c.Value("current_user").(*models.User)).CompanyID
+	cid := (c.Value("currentUser").(*models.User)).CompanyID
 	if err := tx.Where("company_id = ?", cid).Find(expense, c.Param("expense_id")); err != nil {
 		return c.Error(404, err)
 	}
@@ -187,7 +187,7 @@ func (v ExpensesResource) Destroy(c buffalo.Context) error {
 	if !ok {
 		return errors.WithStack(errors.New("no transaction found"))
 	}
-	cid := (c.Value("current_user").(*models.User)).CompanyID
+	cid := (c.Value("currentUser").(*models.User)).CompanyID
 
 	// Allocate an empty Expense
 	expense := &models.Expense{}

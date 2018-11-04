@@ -40,8 +40,8 @@
     
           </ul>
           <span class="navbar-text">
-              <%=  if (current_user) { %>
-              <%= current_user.Name %>
+              <%=  if (currentUser) { %>
+              <%= currentUser.Name %>
               <a href="<%= authLogoutPath() %>" method="delete" data-method="DELETE">Logout</a>
               <% } else { %>
               <% let authProvider = "google" %>

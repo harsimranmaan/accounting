@@ -56,6 +56,7 @@ func App() *buffalo.App {
 		app.Use(popmw.Transaction(models.DB))
 		app.Use(setUser)
 		app.Use(authorize)
+		app.Use(setNullUUID)
 		// Setup and use translations:
 		app.Use(translations())
 

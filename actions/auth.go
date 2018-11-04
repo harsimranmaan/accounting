@@ -71,7 +71,7 @@ func AuthCallback(c buffalo.Context) error {
 			return err
 		}
 	}
-	c.Session().Set("current_user_id", u.ID)
+	c.Session().Set("currentUser_id", u.ID)
 	if err := c.Session().Save(); err != nil {
 		return err
 	}
@@ -81,7 +81,7 @@ func AuthCallback(c buffalo.Context) error {
 
 func setUser(next buffalo.Handler) buffalo.Handler {
 	return func(c buffalo.Context) error {
-		if uid := c.Session().Get("current_user_id"); uid != nil {
+		if uid := c.Session().Get("currentUser_id"); uid != nil {
 			u := &models.User{}
 			tx, ok := c.Value("tx").(*pop.Connection)
 			if !ok {
@@ -90,7 +90,7 @@ func setUser(next buffalo.Handler) buffalo.Handler {
 			if err := tx.Eager("Company").Find(u, uid); err != nil {
 				return err
 			}
-			c.Set("current_user", u)
+			c.Set("currentUser", u)
 			// tx = tx.Where("company_id = ?", u.CompanyID)
 			// c.Set("tx", tx)
 		}
@@ -100,12 +100,12 @@ func setUser(next buffalo.Handler) buffalo.Handler {
 
 func authorize(next buffalo.Handler) buffalo.Handler {
 	return func(c buffalo.Context) error {
-		if u := c.Value("current_user"); u == nil {
+		if u := c.Value("currentUser"); u == nil {
 			c.Flash().Add("danger", "You are not authorized to perform this action. Ask you admin for permission")
 			return c.Redirect(302, "/")
 		}
 		//req:= c.Request()
-		// user:= c.Value("current_user").(*models.User)
+		// user:= c.Value("currentUser").(*models.User)
 		// roleCheck:= fmt.Sprintf("%s_%s",req.URL.Path, req.Method)
 		return next(c)
 	}

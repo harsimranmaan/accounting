@@ -222,6 +222,7 @@ CREATE TABLE public.wallet_entries (
     notes character varying(255),
     amount numeric NOT NULL,
     payment_date timestamp without time zone NOT NULL,
+    payment_type character varying(255) NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );

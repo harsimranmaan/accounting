@@ -5,6 +5,7 @@ import (
 
 	"github.com/gobuffalo/buffalo"
 	"github.com/gobuffalo/pop"
+	"github.com/gobuffalo/uuid"
 )
 
 func setProject(next buffalo.Handler) buffalo.Handler {
@@ -15,16 +16,22 @@ func setProject(next buffalo.Handler) buffalo.Handler {
 		if !ok {
 			return missingTransaction
 		}
-		cid := (c.Value("current_user").(*models.User)).CompanyID
+		cid := (c.Value("currentUser").(*models.User)).CompanyID
 		if err := tx.Where("company_id = ?", cid).Find(p, c.Param("project_id")); err != nil {
 			return err
 		}
-		c.Set("current_project", p)
+		c.Set("currentProject", p)
 		return next(c)
 	}
 }
 
-
+func setNullUUID(next buffalo.Handler) buffalo.Handler {
+	return func(c buffalo.Context) error {
+		c.Set("nullUuid", uuid.UUID{}.String())
+		c.Set("TIME_FORMAT", "2006-Jan-02")
+		return next(c)
+	}
+}
 
 func setBudgetLine(next buffalo.Handler) buffalo.Handler {
 	return func(c buffalo.Context) error {
@@ -34,11 +41,12 @@ func setBudgetLine(next buffalo.Handler) buffalo.Handler {
 		if !ok {
 			return missingTransaction
 		}
-		pid := (c.Value("current_project").(*models.Project)).ID
-		if err := tx.Where("project_id = ?", pid).Find(b, c.Param("budget_line_id")); err != nil {
+		p := c.Value("currentProject").(*models.Project)
+		if err := tx.Where("project_id = ?", p.ID).Find(b, c.Param("budget_line_id")); err != nil {
 			return err
 		}
-		c.Set("current_budget_line", b)
+		b.Project = *p
+		c.Set("currentBudgetLine", b)
 		return next(c)
 	}
 }
